@@ -10,7 +10,7 @@ namespace Financeiro.Controllers
     {
         public ActionResult Index()
         {
-            return View();//teste
+            return View();
         }
 
         public ActionResult About()
