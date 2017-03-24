@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Financeiro.Models.Empresa>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Empresas</h2>
+
+<p>
+    @Html.ActionLink("Nova Empresa", "New", "Empresas", null, new { @class = "btn btn-primary" })
+</p>
+
+<table id="empresas" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Empresa</th>
+            <th>Data Cadastro</th>
+            <th>Deletar</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#empresas").DataTable({
+                ajax: {
+                    url: "/api/empresas",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "nome",
+                        render: function (data, type, empresa) {
+                            return "<a href='/empresas/edit/" + empresa.id + "'>" + empresa.nome + "</a>";
+                        }
+                    },
+                    {
+                        data: "dataCadastro"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-empresa-id=" + data + ">Deletar</button>";
+                        }
+                    }
+                ]
+            });
+
+            $("#empresas").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Deseja deletar essa empresa?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/empresas/" + button.attr("data-empresa-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}
+
