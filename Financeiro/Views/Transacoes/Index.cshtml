@@ -1,0 +1,124 @@
+﻿@model IEnumerable<Financeiro.Models.Transacao>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Transação</h2>
+
+<p>
+    @Html.ActionLink("Nova Transação", "New", "Transacoes", null, new { @class = "btn btn-primary" })
+</p>
+
+<table id="transacoes" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Data Investimento</th>
+            <th>Data Recebimento</th>
+            <th>Empresa</th>
+            <th>Taxa %</th>
+            <th>Qtd. Dias</th>
+            <th>Valor Investido</th>
+            <th>Valor Juros</th>
+            <th>Valor a Receber</th>
+            <th>Pago?</th>
+            <th>Visualizar</th>
+            <th>Deletar</th>
+        </tr>
+    </thead>
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#transacoes").DataTable({
+                ajax: {
+                    url: "/api/transacoes",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "dataInvestimento",
+                        render: function (data) {
+                            return moment(data).format("DD/MM/YYYY");
+                        }
+                    },
+                    {
+                        data: "dataRecebimento",
+                        render: function (data) {
+                            return moment(data).format("DD/MM/YYYY");
+                        }
+                    },
+                    {
+                        data: "empresa.nome"
+                    },
+                    {
+                        data: "taxaJuros"
+                    },
+                    {
+                        data: "qtdDias"
+                    },
+                    {
+                        data: "valorInvestido",
+                        render: function (data) {
+                            return "R$ " + data;
+                        }
+                    },
+                    {
+                        data: "valorJuros",
+                        render: function (data) {
+                            return "R$ " + data;
+                        }
+                    },
+                    {
+                        data: "valorReceber",
+                        render: function (data) {
+                            return "R$ " + data;
+                        }
+                    },
+                    {
+                        data: "isPago",
+                        render: function (data) {
+                            if (data == false)
+                                return "Não";
+                            else
+                                return "Sim";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data, type, transacao) {
+                            return "<a href='/transacoes/edit/" + transacao.id + "'>" + "Visualizar" + "</a>";
+                            //return "<button class='btn-link js-edit' data-transacao-id=" + data + ">Visualizar</button>";
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-transacao-id=" + data + ">Deletar</button>";
+                        }
+                    }
+                ]
+            });
+        });
+
+        $("#transacoes").on("click", ".js-delete", function () {
+            var button = $(this);
+
+            bootbox.confirm("Tem certeza que deseja deletar essa transação?", function (result) {
+                if (result) {
+                    $.ajax({
+                        url: "/api/transacoes/" + button.attr("data-transacao-id"),
+                        method: "DELETE",
+                        success: function () {
+                            table.row(button.parents("tr")).remove().draw();
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
+}

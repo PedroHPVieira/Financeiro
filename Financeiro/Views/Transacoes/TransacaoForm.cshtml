@@ -1,0 +1,225 @@
+﻿@model  Financeiro.ViewModels.TransacaoFormViewModel
+@{
+    ViewBag.Title = "TransacaoForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Transação</h2>
+
+@using (Html.BeginForm("Save", "Transacoes"))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Empresa.Nome)
+        @Html.TextBoxFor(m => m.Empresa.Nome, new { @class = "form-control", id = "empresa" })
+        @Html.ValidationMessageFor(m => m.Empresa.Nome)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.DataInvestimento)
+        @Html.TextBoxFor(m => m.DataInvestimento, "{0:d/MM/yyyy}", new { @class = "form-control", id = "dataInvestimento" })
+        @Html.ValidationMessageFor(m => m.DataInvestimento)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.DataRecebimento)
+        @Html.TextBoxFor(m => m.DataRecebimento, "{0:d/MM/yyyy}", new { @class = "form-control", id = "dataRecebimento" })
+        @Html.ValidationMessageFor(m => m.DataRecebimento)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.TaxaJuros)
+        @Html.TextBoxFor(m => m.TaxaJuros, new { @class = "form-control", id = "taxaJuros" })
+        @Html.ValidationMessageFor(m => m.TaxaJuros)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.QtdDias)
+        @Html.TextBoxFor(m => m.QtdDias, new { @class = "form-control", id = "qtdDias" })
+        @Html.ValidationMessageFor(m => m.QtdDias)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.ValorInvestido)
+        @Html.TextBoxFor(m => m.ValorInvestido, new { @class = "form-control", id = "valorInvestido" })
+        @Html.ValidationMessageFor(m => m.ValorInvestido)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.valorJuros)
+        @Html.TextBoxFor(m => m.valorJuros, new { @class = "form-control", id = "valorJuros" })
+        @Html.ValidationMessageFor(m => m.valorJuros)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.ValorReceber)
+        @Html.TextBoxFor(m => m.ValorReceber, new { @class = "form-control", id = "valorReceber" })
+        @Html.ValidationMessageFor(m => m.ValorReceber)
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.IsPago)
+        @Html.CheckBoxFor(m => m.IsPago, new { @class = "form-control", id = "isPago" })
+        @Html.ValidationMessageFor(m => m.IsPago)
+    </div>
+
+    @Html.HiddenFor(m => m.Id)
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+}
+
+@*<form id="novaTransacao">
+
+        <div class="form-group">
+            <label>Empresa</label>
+            <div class="tt-container">
+                <input id="empresa" name="empresa" data-rule-validEmpresa="true" required type="text" value="" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Data Investimento</label>
+            <div class="tt-container">
+                <input id="dataInvestimento" name="dataInvestimento" data-rule-validDataInvestimento required type="text" value="" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Data Recebimento</label>
+            <div class="tt-container">
+                <input id="dataRecebimento" name="dataRecebimento" required type="text" value="" class="form-control" />
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label>Taxa de Juros</label>
+            <div class="tt-container">
+                <input id="taxaJuros" name="taxaJuros" required type="text" value="" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Quantidade de dias investido</label>
+            <div class="tt-container">
+                <input id="qtdDias" name="qtdDias" required type="text" value="" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Valor a investir</label>
+            <div class="tt-container">
+                <input id="valorInvestido" name="valorInvestido" required type="text" value="" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Valor do rendimento/juros</label>
+            <div class="tt-container">
+                <input id="valorJuros" name="valorJuros" required type="text" value="" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Valor a receber</label>
+            <div class="tt-container">
+                <input id="valorReceber" name="valorReceber" required type="text" value="" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Valor já foi pago?</label>
+            <div class="tt-container">
+                <input id="isPago" name="isPago" type="checkbox" class="form-control" />
+            </div>
+        </div>
+
+        <button id="btnSalvar" class="btn btn-primary">Salvar</button>
+    </form>*@
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/js/jquery")
+    @Scripts.Render("~/js/globalize")
+    @*@RenderSection("footerSection", required: false)*@
+    @*<script type="text/javascript">
+            $(function () {
+                Globalize.culture("pt-BR");
+            });
+        </script>*@
+
+    <script>
+        $(document).ready(function () {
+            debugger
+            var viewModel = {
+
+            };
+
+            var empresas = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('nome'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/api/empresas?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $("#empresa").typeahead({
+                minLength: 3,
+                highlight: true
+            }, {
+                name: 'empresas',
+                display: 'nome',
+                source: empresas
+            }).on("typeahead:select", function(e, empresa){
+                viewModel.empresaId = empresa.id;
+            });
+
+            $.validator.addMethod("ValidEmpresa", function () {
+                return viewModel.empresaId && viewModel.empresaId != 0;
+            }, "Por favor, selecione uma empresa válida.")
+
+
+            $("#novaTransacao").on("click", "#btnSalvar", function () {
+                debugger
+                viewModel.dataInvestimento = document.getElementById('dataInvestimento').value;
+                viewModel.dataRecebimento = document.getElementById('dataRecebimento').value;
+                viewModel.taxaJuros = document.getElementById('taxaJuros').value;
+                viewModel.qtdDias = document.getElementById('qtdDias').value;
+                viewModel.valorInvestido = document.getElementById('valorInvestido').value;
+                viewModel.valorJuros = document.getElementById('valorJuros').value;
+                viewModel.valorReceber = document.getElementById('valorReceber').value;
+                viewModel.isPago = $("#isPago").prop('checked')
+                viewModel.ativo = true;
+                viewModel.usuarioId = 0;
+
+            });
+
+            var validator = $("#novaTransacao").validate({
+                submitHandler: function () {
+                    $.ajax({
+                        url: "/api/transacoes",
+                        method: "post",
+                        data: viewModel
+                    })
+                    .done(function () {
+                        toastr.success("Transação criada com sucesso!");
+
+                        $("#empresa").typeahead("val", "");
+
+                        viewModel = {};
+                        validator.resetForm();
+                    })
+                    .fail(function () {
+                        toastr.error("Algo inesperado aconteceu!");
+                    });
+
+                    return false;
+                }
+            });
+        });
+    </script>
+}
+
