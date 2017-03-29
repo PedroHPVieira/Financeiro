@@ -18,9 +18,13 @@ namespace Financeiro.Dtos
         public int EmpresaId { get; set; }
 
         [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "0:dd/MM/yyyy")]
+        [DataType(DataType.Date, ErrorMessage = "Data em formado inválido")]
         public DateTime DataInvestimento { get; set; }
 
         [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "0:dd/MM/yyyy")]
+        [DataType(DataType.Date, ErrorMessage = "Data em formado inválido")]
         public DateTime DataRecebimento { get; set; }
 
         [Required]

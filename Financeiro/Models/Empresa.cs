@@ -12,6 +12,7 @@ namespace Financeiro.Models
 
         [Required]
         [StringLength(100)]
+        [Display(Name = "Nome da empresa")]
         public string Nome { get; set; }
 
         public DateTime DataCadastro { get; set; }
