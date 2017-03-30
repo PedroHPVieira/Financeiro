@@ -32,8 +32,7 @@
 @section scripts
 {
     <script>
-        $(document).ready(function () {
-            debugger
+        $(document).ready(function () {            
             var table = $("#transacoes").DataTable({
                 ajax: {
                     url: "/api/transacoes",
@@ -103,23 +102,22 @@
                     }
                 ]
             });
-        });
 
-        $("#transacoes").on("click", ".js-delete", function () {
-            var button = $(this);
-
-            bootbox.confirm("Tem certeza que deseja deletar essa transação?", function (result) {
-                if (result) {
-                    $.ajax({
-                        url: "/api/transacoes/" + button.attr("data-transacao-id"),
-                        method: "DELETE",
-                        success: function () {
-                            table.row(button.parents("tr")).remove().draw();
-                        }
-                    });
-                }
+            $("#transacoes").on("click", ".js-delete", function () {
+                var button = $(this);
+                
+                bootbox.confirm("Tem certeza que deseja deletar essa transação?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/transacoes/" + button.attr("data-transacao-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
             });
         });
-
     </script>
 }

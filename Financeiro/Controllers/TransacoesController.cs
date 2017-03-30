@@ -73,6 +73,10 @@ namespace Financeiro.Controllers
             if (!ModelState.IsValid)
                 return View("TransacaoForm");
 
+            var empresa = _context.Empresas.Where(c => c.Nome == transacaoDto.Empresa.Nome).SingleOrDefault();
+            transacaoDto.Empresa = empresa;
+            transacaoDto.EmpresaId = empresa.Id;
+
             if (transacaoDto.Id == 0)
             {
                 var transacao = Mapper.Map<TransacaoDto, Transacao>(transacaoDto);

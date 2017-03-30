@@ -16,6 +16,7 @@ namespace Financeiro.Models
         public string Nome { get; set; }
 
         public DateTime DataCadastro { get; set; }
+
         public DateTime DataAtualizacao { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)

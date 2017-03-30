@@ -14,10 +14,12 @@ namespace Financeiro.App_Start
         {
             //From Domain to Dto
             Mapper.CreateMap<Empresa, EmpresaDto>();
+            Mapper.CreateMap<Transacao, TransacaoDto> ();
 
 
             //From Dto to Domain
             Mapper.CreateMap<EmpresaDto, Empresa>().ForMember(c => c.Id, opt => opt.Ignore());
+            Mapper.CreateMap<TransacaoDto, Transacao>().ForMember(c => c.Id, opt => opt.Ignore());
         }        
     }
 }
